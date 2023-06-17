@@ -1,34 +1,47 @@
 import axios from "axios";
-import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from 'react';
+import { Link, useNavigate, useParams } from "react-router-dom";
 
 export default function EditUser(){
     let navigate=useNavigate()
 
+    const {id} = useParams()
+
     const [user,setUser] = useState({
-        name:"",
-        username:"",
-        email:""
+        name:" ",
+        username:" ",
+        email:" "
     })
 
     const{name,username,email} = user;
 
-   const onInputChange = (e) => {
+    const onInputChange = (e) => {
         setUser({...user,[e.target.name]:e.target.value})
    }
 
-   const onSubmit=async (e) =>{
-        e.preventDefault();
-        await axios.post("http://localhost:8080/user",user);
-        navigate("/");
+    useEffect(()=>{
+        loadUser();
+   
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    },[]);
 
+    const onSubmit=async (e) =>{
+        e.preventDefault();
+        await axios.put(`http://localhost:8080/user/${id}`,user);
+        navigate("/");
    }
+
+    const loadUser = async ()=>{
+    const result=await axios.get(`http://localhost:8080/users/${{id}}`);
+        setUser(result.data);
+}
     return(
         <div className="container mt-4">
             <div className="row mt-4">
                 <div className="col-md-6 offset-md-3 rounded shadow border p-4 mt-2">
                 <h2 className="text-center md-4">Edit User</h2>
-                <form>
+                
+                <form onSubmit={(e)=>onSubmit(e)}>
                 <div className="mb-3">
                
                 <label htmlFor="Name" className="form-label">Name</label>

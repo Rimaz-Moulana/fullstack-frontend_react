@@ -40,13 +40,13 @@ export default function Home() {
       <td>{users.email}</td>
       <td>
         <button className='btn btn-primary mx-2 mt-1'>View</button>
-        <Link className='btn btn-outline-primary mx-2 mt-1' to="/edituser">Edit</Link>
-        <button className='btn btn-danger mx-2 mt-1'>Delete</button>
+        <Link className='btn btn-outline-primary mx-2 mt-1' to={`/edituser/${users.id}`}>Edit</Link>
+        <Link className='btn btn-danger mx-2 mt-1'>Delete</Link>
 
       </td>
     </tr>
     ))
-  }
+  }q
     
   </tbody>
 </table>
