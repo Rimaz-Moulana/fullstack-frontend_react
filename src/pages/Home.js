@@ -1,12 +1,14 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 
 
 export default function Home() {
 
     const [users,setUsers] = useState([])
 
+    const {id}=useParams();
+    
     useEffect(()=>{
         // console.log("code with Rimaz")
         loadUsers();
@@ -16,6 +18,11 @@ export default function Home() {
         const result=await axios.get("http://localhost:8080/users");
         setUsers(result.data);
     };
+
+    const deleteUser=async(id)=>{
+      await axios.delete(`http://localhost:8080/user/${id}`)
+      loadUsers()
+    }
     return(
     <div className='container'>
         <div className='py-5'>
@@ -31,7 +38,6 @@ export default function Home() {
   </thead>
   <tbody>
   {
-    // eslint-disable-next-line array-callback-return
     users.map((users,index)=>(
       <tr>
       <th scope="row" key={index}>{index+1}</th>
@@ -39,14 +45,15 @@ export default function Home() {
       <td>{users.username}</td>
       <td>{users.email}</td>
       <td>
-        <button className='btn btn-primary mx-2 mt-1'>View</button>
+        <Link className='btn btn-primary mx-2 mt-1' to={`userdetails/${users.id}`} >View</Link>
         <Link className='btn btn-outline-primary mx-2 mt-1' to={`/edituser/${users.id}`}>Edit</Link>
-        <Link className='btn btn-danger mx-2 mt-1'>Delete</Link>
+        <Link className='btn btn-danger mx-2 mt-1' onClick={()=>deleteUser(users.id)}>Delete</Link>
 
       </td>
     </tr>
     ))
-  }q
+  }
+
     
   </tbody>
 </table>

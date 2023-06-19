@@ -2,6 +2,7 @@ import axios from "axios";
 import React, { useEffect, useState } from 'react';
 import { Link, useNavigate, useParams } from "react-router-dom";
 
+
 export default function EditUser(){
     let navigate=useNavigate()
 
@@ -13,17 +14,15 @@ export default function EditUser(){
         email:" "
     })
 
+    useEffect(()=>{
+        loadUser();
+    },[]);
+
     const{name,username,email} = user;
 
     const onInputChange = (e) => {
         setUser({...user,[e.target.name]:e.target.value})
    }
-
-    useEffect(()=>{
-        loadUser();
-   
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    },[]);
 
     const onSubmit=async (e) =>{
         e.preventDefault();
@@ -32,7 +31,7 @@ export default function EditUser(){
    }
 
     const loadUser = async ()=>{
-    const result=await axios.get(`http://localhost:8080/users/${{id}}`);
+    const result=await axios.get(`http://localhost:8080/user/${{id}}`);
         setUser(result.data);
 }
     return(
